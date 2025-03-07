@@ -46,7 +46,7 @@ class StaticArray:
     def print_size(self):
         """Print the size of the array"""
 
-        print(f"The size of this static array is: {self.length}")
+        print(f"The length of this static array is: {self.length}")
 
 
     def print_all_elements(self):
