@@ -5,10 +5,20 @@ class StaticArray:
     def __init__(self, arr):
         # Our initialized array
         self.array = arr
-        # The size of our array
-        self.size = len(arr)
+        # The amount of elements in our array at any given moment
+        self.length = len(arr)
         # The pointer that tells us where the last element of our array is.
-        self.pointer = self.size - 1
+        self.pointer = self.length - 1
+        # The max_capacity of the array, determined at initialization
+        self.max_capacity = len(arr)
+
+
+    def at_max_capacity(self):
+        if self.length == self.max_capacity:
+            print("Array is at max capacity")
+            return True
+        else:
+            return False
 
 
     def read_index(self, index):
@@ -27,7 +37,7 @@ class StaticArray:
     def print_size(self):
         """Print the size of the array"""
 
-        print(f"The size of this static array is: {self.size}")
+        print(f"The size of this static array is: {self.length}")
 
 
     def print_all_elements(self):
@@ -36,9 +46,9 @@ class StaticArray:
         if self.array:
             print(f"Reading all elements from array")
             print("This is an O(n) time complexity operation, because the number of operations grows linearly with the size of the array.")
-            for i in range(self.size):
+            for i in range(self.length):
                 print(f"Element #{i+1} in the array: {self.array[i]}")
-            print(f"There are {self.size} elements in the array. So {self.size} operations were made")
+            print(f"There are {self.length} elements in the array. So {self.length} operations were made")
         else:
             print("No elements in the array.")
 
@@ -61,7 +71,7 @@ class StaticArray:
                 self.array[self.pointer] = -1
                 # We need to decrement the size since an element has been removed. This will in
                 # turn move the pointer to the new last element
-                self.size -= 1
+                self.length -= 1
                 # Returning the popped element in case we'd like to utilize it for something one
                 # last time
                 return popped_element
@@ -75,15 +85,15 @@ class StaticArray:
 
                 # Shift all elements after popped element over to ensure they remain contiguous
                 # But only if there is more than one element in the array.
-                if self.size > 1:
-                    for i in range(index + 1, self.size):
+                if self.length > 1:
+                    for i in range(index + 1, self.length):
                         self.array[i - 1] = self.array[i]
 
                 # Setting the element at the pointer to empty
                 self.array[self.pointer] = -1
                 # Reducing size, to indicate an element was removed. In turn, moving the pointer
                 # to the new last element.
-                self.size -= 1
+                self.length -= 1
 
                 return popped_element
             else:
@@ -96,15 +106,46 @@ class StaticArray:
         """append an element to the end of an array, given there is an empty space."""
 
         # Check if there is a space in the array after the pointer, we can assume it's empty.
-        if len(self.array) > self.pointer + 1:
+        if  not self.at_max_capacity() or self.length == 0:
+            print(f"Appending {element} to the end of the array")
+            print("""This is an O(1) time complexity operation, because the end of the array is always accessible 
+            through the pointer, no matter the size of the array""")
             # Add element to empty space
             self.array[self.pointer + 1] = element
             # Increment size, in turn setting pointer to the new element.
-            self.size += 1
+            self.length += 1
         # If array is full
-        else:
-            print("Array is at maximum capacity.")
+        # else:
+        #     print("Array is at maximum capacity.")
 
+
+    def insert(self, index, element):
+        """Insert element at given index, given there is empty space."""
+
+        try:
+            # Check if array empty or index the same as pointer
+            if  self.length == 0 or index == self.pointer:
+                # Check if array is at max_capacity, if so, replace element at pointer
+                if self.at_max_capacity() and self.length > 0:
+                    self.array[self.pointer] = element
+                # If index is the last index and array not at max_capacity append element
+                else:
+                    self.append(element)
+                self.length += 1
+            else:
+                # Check if array is at max_capacity, if so, remove element at end of array to make room for new
+                # one
+                if self.at_max_capacity() and self.length > 0:
+                    self.array[self.pointer] = -1
+                    self.length -= 1
+                # Shift all elements starting at given index to the right, to make space for new element.
+                for i in range(self.pointer, index, -1):
+                    self.array[i] = self.array[i - 1]
+                # Assign element to given index
+                self.array[index] = element
+                self.length += 1
+        except IndexError:
+            print("This index does not exist.")
 
 
 
