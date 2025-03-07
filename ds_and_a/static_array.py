@@ -49,10 +49,12 @@ class StaticArray:
 
         # If valid index given or no index given run try block, else catch IndexError exception
         try:
-            # If no index is given pop the last element
-            if self.array and not index:
+            # If no index is given or the index given is the last index pop the last element
+            if self.array and not index or self.array and index == self.pointer:
                 print(f"Popping from end of array")
-                print("This is a O(1) time complexity operation, because the end of the array is always instantly accessible, and no elements must be shifted when popping.")
+                print("""This is a O(1) time complexity operation, because the end of the array 
+                is always instantly accessible through the pointer, and no elements must be 
+                shifted when popping.""")
                 popped_element = self.array[self.pointer]
                 # In static arrays indexes are never deleted, just filled with a value indicating
                 # they are empty
@@ -63,8 +65,8 @@ class StaticArray:
                 # Returning the popped element in case we'd like to utilize it for something one
                 # last time
                 return popped_element
-            # If an index is given, pop given index, and shift remaining elements so they remain
-            # contiguous with each other
+            # If an index is given that isnt the last one, pop given index, and shift elements after index over 1
+            # so they remain contiguous with the elements before index.
             elif self.array:
                 print(f"Popping from {index} index of array")
                 print("""This is an O(n) time complexity operation, because in the worst case 
@@ -88,5 +90,6 @@ class StaticArray:
                 print("No elements in the array to pop.")
         except IndexError:
             print("This index does not exist.")
+
 
 
