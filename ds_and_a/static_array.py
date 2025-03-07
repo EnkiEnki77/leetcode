@@ -7,7 +7,7 @@ class StaticArray:
         self.array = arr
         # The amount of elements in our array at any given moment
         self.length = 0
-        # Sets length property, accounting for indexes input has indicated are empty.
+        # Sets length property, accounting for indexes array has indicated are empty with a -1.
         for i in range(len(arr)):
             if arr[i] > -1:
                 self.length += 1
@@ -19,9 +19,10 @@ class StaticArray:
 
     def at_max_capacity(self):
         """Checks if the array is at max capacity."""
-        print(f"Length: {self.length}", f"max capacity: {self.max_capacity}")
+
+        # print(f"Length: {self.length}", f"max capacity: {self.max_capacity}")
         if self.length > 0 and self.length == self.max_capacity:
-            # print("Array is at max capacity")
+            print("Array is at max capacity")
             return True
         else:
             return False
