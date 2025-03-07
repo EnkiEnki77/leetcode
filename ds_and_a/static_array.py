@@ -76,8 +76,8 @@ class StaticArray:
                 # Shift all elements after popped element over to ensure they remain contiguous
                 # But only if there is more than one element in the array.
                 if self.size > 1:
-                    for i in range(index, self.size - 1):
-                        self.array[i] = self.array[i + 1]
+                    for i in range(index + 1, self.size):
+                        self.array[i - 1] = self.array[i]
 
                 # Setting the element at the pointer to empty
                 self.array[self.pointer] = -1
@@ -90,6 +90,23 @@ class StaticArray:
                 print("No elements in the array to pop.")
         except IndexError:
             print("This index does not exist.")
+
+
+    def append(self, element):
+        """append an element to the end of an array, given there is an empty space."""
+
+        # Check if there is a space in the array after the pointer, we can assume it's empty.
+        if len(self.array) > self.pointer + 1:
+            # Add element to empty space
+            self.array[self.pointer + 1] = element
+            # Increment size, in turn setting pointer to the new element.
+            self.size += 1
+        # If array is full
+        else:
+            print("Array is at maximum capacity.")
+
+
+
 
 
 
