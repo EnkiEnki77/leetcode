@@ -6,15 +6,17 @@ class StaticArray:
         # Our initialized array
         self.array = arr
         # The amount of elements in our array at any given moment
-        self.length = len(arr)
+        self.length = 0
         # The pointer that tells us where the last element of our array is.
         self.pointer = self.length - 1
-        # The max_capacity of the array, determined at initialization
+        # The max_capacity of the array, determined at initialization. This is immutable
         self.max_capacity = len(arr)
 
 
     def at_max_capacity(self):
-        if self.length == self.max_capacity:
+        """Checks if the array is at max capacity."""
+
+        if self.length > 0 and self.length == self.max_capacity:
             print("Array is at max capacity")
             return True
         else:
@@ -126,22 +128,28 @@ class StaticArray:
             # Check if array empty or index the same as pointer
             if  self.length == 0 or index == self.pointer:
                 # Check if array is at max_capacity, if so, replace element at pointer
-                if self.at_max_capacity() and self.length > 0:
+                if self.at_max_capacity():
                     self.array[self.pointer] = element
                 # If index is the last index and array not at max_capacity append element
                 else:
                     self.append(element)
+                print(f"Inserting {element} to the end of the array")
+                print("""This is an O(1) time complexity operation, because the end of the array is always accessible 
+                            through the pointer, no matter the size of the array""")
                 self.length += 1
             else:
                 # Check if array is at max_capacity, if so, remove element at end of array to make room for new
                 # one
-                if self.at_max_capacity() and self.length > 0:
+                if self.at_max_capacity():
                     self.array[self.pointer] = -1
                     self.length -= 1
                 # Shift all elements starting at given index to the right, to make space for new element.
                 for i in range(self.pointer, index, -1):
                     self.array[i] = self.array[i - 1]
                 # Assign element to given index
+                print(f"Inserting {element} at index {index} of the array")
+                print("""This is an O(n) time complexity operation, because at worst case we have to shift all 
+                other elements, the amount of operations grows linearly with the array""")
                 self.array[index] = element
                 self.length += 1
         except IndexError:
