@@ -32,13 +32,15 @@ class StaticArray:
         """Read from the array at the given index assuming it exists"""
 
         try:
+            result = self.array[index]
             print(f"Reading index {index} from array")
             print("""This is an O(1) time complexity operation, because an index is always 
             tied directly to an elements address in memory. Making it instantly accessible, no 
             matter the size of the data structure.""")
-            return self.array[index]
+            return result
         except IndexError:
             print("This index does not exist.")
+            raise
 
 
     def print_size(self):
@@ -68,11 +70,13 @@ class StaticArray:
         try:
             # If no index is given or the index given is the last index pop the last element
             if self.array and not index or self.array and index == self.pointer:
+                popped_element = self.array[self.pointer]
+
                 print(f"Popping from end of array")
                 print("""This is a O(1) time complexity operation, because the end of the array 
                 is always instantly accessible through the pointer, and no elements must be 
                 shifted when popping.""")
-                popped_element = self.array[self.pointer]
+
                 # In static arrays indexes are never deleted, just filled with a value indicating
                 # they are empty
                 self.array[self.pointer] = -1
@@ -85,10 +89,11 @@ class StaticArray:
             # If an index is given that isnt the last one, pop given index, and shift elements after index over 1
             # so they remain contiguous with the elements before index.
             elif self.array:
+                popped_element = self.array[index]
                 print(f"Popping from {index} index of array")
                 print("""This is an O(n) time complexity operation, because in the worst case 
                 (the 0 index is popped), we then have to shift over every element.""")
-                popped_element = self.array[index]
+
 
                 # Shift all elements after popped element over to ensure they remain contiguous
                 # But only if there is more than one element in the array.
@@ -152,11 +157,11 @@ class StaticArray:
                 for i in range(self.pointer, index, -1):
                     self.array[i] = self.array[i - 1]
                 # Assign element to given index
+                self.array[index] = element
+                self.length += 1
                 print(f"Inserting {element} at index {index} of the array")
                 print("""This is an O(n) time complexity operation, because at worst case we have to shift all 
                 other elements, the amount of operations grows linearly with the array""")
-                self.array[index] = element
-                self.length += 1
         except IndexError:
             print("This index does not exist.")
 
